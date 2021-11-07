@@ -17,7 +17,7 @@ export default {
       email: '',
       password: ''
     }
-  }
+  },
   methods: {
     register(){
       if(!this.email || !this.password){
