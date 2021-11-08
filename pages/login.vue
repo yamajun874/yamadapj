@@ -1,14 +1,13 @@
 <template>
-  <div class="register">
+  <div class="login">
     <CommonHeader />
-    <div class="register-content">
-      <h1 class="register-ttl">新規登録</h1>
-      <input type="text" v-model="name" placeholder="ユーザーネーム">
+    <div class="login-content">
+      <h1 class="login-ttl">ログイン</h1>
       <input type="email" v-model="email" placeholder="メールアドレス">
       <input type="password" v-model="password" placeholder="パスワード">
-      <button @click="register">新規登録</button>
+      <button @click="login">ログイン</button>
     </div>
-  </div>  
+  </div>
 </template>
 
 <script>
@@ -16,56 +15,57 @@ import firebase from '~/plugins/firebase'
 export default {
   data(){
     return{
-      name: '',
       email: '',
       password: ''
     }
   },
   methods: {
-    register(){
+    login(){
       if(!this.email || !this.password){
-        alert('メールアドレスまたはパスワードが入力されていません。 ')
+        alert('メールアドレスまたはパスワードが入力されていません。')
         return
       }
       firebase
         .auth()
-        .createUserWithEmailAndPassword(this.email, this.password)
-        .then((data)=> {
-          data.user.sendEmailVerification().then(() => {
-            this.$router.replace('/home')
-          })
+        .signInWithEmailAndPassword(this.email, this.password)
+        .then(() => {
+          alert('ログインが完了しました')
+          this.$router.push('/home')
         })
         .catch((error) => {
-          switch(error.code){
+          switch (error.code){
             case 'auth/invalid-email':
-              alert('メールアドレス形式が違います。')
+              alert('メールアドレスの形式が違います。')
               break
-            case 'auth/email-already-in-use':
-              alert('このメールアドレスはすでに使われています。')
+            case 'auth/user-disabled':
+              alert('ユーザーが無効になっています。')
               break
-            case 'auth/weak-password':
-              alert('パスワードは6文字以上で入力してください。')
+            case 'auth/user-not-found':
+              alert('ユーザーが存在しません。')
+              break
+            case 'auth/wrong-password':
+              alert('パスワードが間違っております。')
               break
             default:
-              alert('エラーが起きました。再度入力してください。')
+              alert('エラーが起きました。しばらくしてから再度お試しください。')
               break
           }
         })
-      }
     }
   }
+}
 </script>
 
 <style scoped>
-  .register {
+  .login {
     background: rgb(48,48,48);
     height: 100vh;
   }
 
-  .register-content {
+  .login-content {
     background: white;
     width: 400px;
-    height: 310px;
+    height: 250px;
     text-align: center;
     border-radius: 10px;
     margin-right: auto;
@@ -73,26 +73,26 @@ export default {
     margin-top: 100px;
   }
 
-  .register-ttl {
+  .login-ttl {
     font-size: 20px;
     padding: 25px 0;
   }
 
-  .register-content input, .register-content button {
+  .login-content input, .login-content button {
     display: block;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 20px;
   }
 
-  .register-content input {
+  .login-content input {
     width: 270px;
     height: 25px;
     border-radius: 10px;
     padding: 5px;
   }
 
-  .register-content button {
+  .login-content button {
     background: #6633CC;
     color: white;
     font-weight: bold;
@@ -103,7 +103,7 @@ export default {
     border: none;
   }
 
-  .register-content button:hover {
+  .login-content button:hover {
     opacity: 0.6;
     transition: 0.6s;
   }
