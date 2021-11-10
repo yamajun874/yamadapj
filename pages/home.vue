@@ -20,15 +20,17 @@
       <div class="home-wrapper" v-for="item in messageList" :key="item.id">
         <div class="home-default">
           <h2 class="home-wrapper--ttl">test</h2>
+
           <div class="heart-logo" @click="heartNum++">
             <img src="../img/heart.png">
           </div>
           <p class="heart-num">{{heartNum}}</p>
+
           <div class="delete-logo" @click="deleteShare(item.id)">
             <img src="../img/cross.png">
           </div>
           <div class="pointer-logo">
-            <NuxtLink to="/comment"><img src="../img/detail.png"></NuxtLink>
+            <NuxtLink :to="{path: '/comment', query: {item: item.message}, param: {itemId: item.id}}"><img src="../img/detail.png"></NuxtLink>
           </div>
         </div>
         <p class="home-comment">
@@ -61,6 +63,8 @@ export default{
         })
     },
 
+
+
     async getShare(){
       const resData = await this.$axios.get('http://127.0.0.1:8000/api/share');
       this.messageList = resData.data.data;
@@ -84,6 +88,8 @@ export default{
     this.getShare();
     }
   },
+
+  
 }
 
 </script>

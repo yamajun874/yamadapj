@@ -13,12 +13,14 @@
 
 <script>
 import firebase from '~/plugins/firebase'
+
 export default {
   data(){
     return{
       name: '',
       email: '',
-      password: ''
+      password: '',
+      uid: ''
     }
   },
   methods: {
@@ -49,6 +51,12 @@ export default {
             default:
               alert('エラーが起きました。再度入力してください。')
               break
+          }
+        })
+        .onAuthStateChange((user) => {
+          if(user){
+             var uid = user.uid;
+             this.uid = uid;
           }
         })
       }
