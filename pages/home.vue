@@ -21,7 +21,7 @@
         <div class="home-default">
           <h2 class="home-wrapper--ttl">test</h2>
 
-          <div class="heart-logo" @click="heartNum++">
+          <div class="heart-logo" @click="likesCreate(item.id)">
             <img src="../img/heart.png">
           </div>
           <p class="heart-num">{{heartNum}}</p>
@@ -82,6 +82,14 @@ export default{
     async deleteShare(id){
       await this.$axios.delete('http://127.0.0.1:8000/api/share/' + id);
       this.getShare();
+    },
+
+    async likesCreate(messageId){
+      const sendItem = {
+        message_id: messageId,
+        //ユーザーidをどのように設定してあげればよい？
+      };
+      await this.$axios.post('http://127.0.0.1:8000/api/like', sendItem);
     },
 
     created(){

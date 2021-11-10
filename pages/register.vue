@@ -34,6 +34,11 @@ export default {
         .createUserWithEmailAndPassword(this.email, this.password)
         .then((data)=> {
           data.user.sendEmailVerification().then(() => {
+            console.log(data.user.uid);
+            const sendData = {
+              uid: data.user.uid,
+            };
+            this.$axios.post('http://127.0.0.1:8000/api/user', sendData);
             this.$router.replace('/home')
           })
         })
@@ -53,12 +58,7 @@ export default {
               break
           }
         })
-        .onAuthStateChange((user) => {
-          if(user){
-             var uid = user.uid;
-             this.uid = uid;
-          }
-        })
+        
       }
     }
   }
