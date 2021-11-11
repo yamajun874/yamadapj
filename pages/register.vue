@@ -36,7 +36,7 @@ export default {
           data.user.sendEmailVerification().then(() => {
             console.log(data.user.uid);
             const sendData = {
-              uid: data.user.uid,
+              id: data.user.uid,
             };
             this.$axios.post('http://127.0.0.1:8000/api/user', sendData);
             this.$router.replace('/home')

@@ -48,7 +48,8 @@ export default{
     return{
       heartNum: 0,
       shareMessage: '',
-      messageList: []
+      messageList: [],
+      userId: ''
     }
   },
 
@@ -87,15 +88,21 @@ export default{
     async likesCreate(messageId){
       const sendItem = {
         message_id: messageId,
-        //ユーザーidをどのように設定してあげればよい？
+        user_id: this.userId
       };
       await this.$axios.post('http://127.0.0.1:8000/api/like', sendItem);
     },
-
-    created(){
-    this.getShare();
-    }
   },
+  
+  created(){
+    this.getShare();
+    firebase.auth().onAuthStateChanged((user)=>{
+      if(user){
+        console.log(user.uid);
+        this.userId = user.uid;
+      }
+    })
+    },
 
   
 }
