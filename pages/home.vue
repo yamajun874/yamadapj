@@ -69,6 +69,7 @@ export default{
     async getShare(){
       const resData = await this.$axios.get('http://127.0.0.1:8000/api/share');
       this.messageList = resData.data.data;
+      this.like_count = resData.data.count;
     },
 
     async createShare(){
@@ -93,18 +94,13 @@ export default{
       const Data = await this.$axios.post('http://127.0.0.1:8000/api/like', sendItem);
       const checkData = Data.data.data;
       console.log(checkData);
-      this.checkCount();
+      this.getShare();
     },
 
-    
-    async checkCount(){
-      const countData = await this.$axios.get('http://127.0.0.1:8000/api/count');
-      this.like_count = countData.data.count;
-    }
   },
   
   created(){
-    this.checkCount();
+    
     this.getShare();
     firebase.auth().onAuthStateChanged((user)=>{
       if(user){
