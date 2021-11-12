@@ -90,11 +90,21 @@ export default{
         message_id: messageId,
         user_id: this.userId
       };
-      await this.$axios.post('http://127.0.0.1:8000/api/like', sendItem);
+      const Data = await this.$axios.post('http://127.0.0.1:8000/api/like', sendItem);
+      const checkData = Data.data.data;
+      console.log(checkData);
+      this.checkCount();
     },
+
+    
+    async checkCount(){
+      const countData = await this.$axios.get('http://127.0.0.1:8000/api/count');
+      this.like_count = countData.data.count;
+    }
   },
   
   created(){
+    this.checkCount();
     this.getShare();
     firebase.auth().onAuthStateChanged((user)=>{
       if(user){
@@ -102,8 +112,8 @@ export default{
         this.userId = user.uid;
       }
     })
-    },
 
+    },
   
 }
 
