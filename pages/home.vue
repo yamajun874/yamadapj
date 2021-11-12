@@ -24,7 +24,7 @@
           <div class="heart-logo" @click="likesCreate(item.id)">
             <img src="../img/heart.png">
           </div>
-          <p class="heart-num">{{heartNum}}</p>
+          <p class="heart-num">{{like_count}}</p>
 
           <div class="delete-logo" @click="deleteShare(item.id)">
             <img src="../img/cross.png">
@@ -46,7 +46,7 @@ import firebase from '~/plugins/firebase'
 export default{
   data(){
     return{
-      heartNum: 0,
+      like_count: '',
       shareMessage: '',
       messageList: [],
       userId: ''
